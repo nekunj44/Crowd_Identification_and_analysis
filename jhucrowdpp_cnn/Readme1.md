@@ -86,14 +86,6 @@ The model achieves satisfactory accuracy on the test set with early stopping ena
 
 ---
 
-## 📈 Visualization
-
-The training and validation accuracy/loss graphs are plotted using matplotlib:
-
-![Training Graph](https://via.placeholder.com/500x300.png?text=Training+Graph+Placeholder)
-
----
-
 ## 📝 Acknowledgments
 
 Special thanks to the creators of the **JHU-CROWD++** dataset. 🙌
