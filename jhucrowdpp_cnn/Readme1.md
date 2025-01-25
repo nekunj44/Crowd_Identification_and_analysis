@@ -79,6 +79,9 @@ print(f"Predicted Class: {predicted_label}")
 
 ## 📊 Results
 
+![Result](Result_JHUCPP_CNN.jpg)
+
+
 The model achieves satisfactory accuracy on the test set with early stopping enabled.
 
 ---

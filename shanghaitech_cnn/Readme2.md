@@ -73,6 +73,8 @@ The training and validation accuracy/loss graphs will be displayed.
 
 ## 📊 Results
 
+![Result](Result_ST_CNN.jpg)
+
 The model achieves satisfactory accuracy on the test set with early stopping and learning rate adjustments.
 
 ---
