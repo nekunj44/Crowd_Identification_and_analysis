@@ -4,6 +4,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
@@ -79,6 +81,7 @@ test_labels = to_categorical(test_labels, NUM_CLASSES)
 model = Sequential([
     Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)),  # Convolutional layer
     MaxPooling2D(pool_size=(2, 2)),  # Max pooling
+    #BatchNormalization(), if there is a need of depth scaling
     Dropout(0.1),
 
     Conv2D(64, (3, 3), activation='relu'),  # Second convolutional layer
@@ -149,6 +152,42 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+
+# Confusion Matrix and Classification Report
+y_pred = np.argmax(model.predict(test_images), axis=1)
+y_true = np.argmax(test_labels, axis=1)
+
+conf_matrix = confusion_matrix(y_true, y_pred)
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=[0, 1, 2], yticklabels=[0, 1, 2])
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.title('Confusion Matrix')
+plt.show()
+
+print("Classification Report:")
+print(classification_report(y_true, y_pred))
+
+def predict_image(model_path, image_path):
+    model = load_model(model_path)
+    img = Image.open(image_path).convert('RGB')
+    img_resized = img.resize(IMAGE_SIZE)
+    img_array = np.array(img_resized) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+
+    predictions = model.predict(img_array)
+    predicted_class = np.argmax(predictions, axis=1)[0]
+
+    return predicted_class
+
+single_image_path = os.path.join(os.getcwd(), "test_image1.jpeg")
+
+if os.path.exists(single_image_path):
+    predicted_label = predict_image("cnn_model.h5", single_image_path)
+    print(f"Predicted Class for the test image: {predicted_label}")
+else:
+    print(f"Test image not found at {single_image_path}")
 
 # -------------------------------
 # Test the model on a single image
