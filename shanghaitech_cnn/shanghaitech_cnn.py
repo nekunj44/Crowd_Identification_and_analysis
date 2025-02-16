@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
@@ -92,7 +93,6 @@ model = Sequential([
 
 model.summary()
 
-
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
@@ -141,3 +141,16 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+# Evaluate the model and generate classification report and confusion matrix
+predictions = model.predict(test_images)
+predicted_classes = np.argmax(predictions, axis=1)
+true_classes = np.argmax(test_labels, axis=1)
+
+# Confusion Matrix
+conf_matrix = confusion_matrix(true_classes, predicted_classes)
+print("Confusion Matrix:\n", conf_matrix)
+
+# Classification Report (Precision, Recall, F1-score)
+class_report = classification_report(true_classes, predicted_classes)
+print("Classification Report:\n", class_report)
